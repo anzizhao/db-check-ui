@@ -64,7 +64,7 @@ export const ADD_TAGS ='ADD_TAGS'
 export const ADD_FILTER_TAGS ='ADD_FILTER_TAGS'
 export const DEL_FILTER_TAGS ='DEL_FILTER_TAGS'
 export const CHANGE_FILTER_TAGS ='CHANGE_FILTER_TAGS'
-//footer filter
+
 export const FILTER_ITEM_TEXT= 'FILTER_ITEM_TEXT' 
 
 export const FILTER_ITEM_DATE = 'FILTER_ITEM_DATE'
