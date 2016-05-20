@@ -4,7 +4,7 @@ import ListItem from 'material-ui/List/ListItem';
 import Badge from 'material-ui/Badge/Badge';
 
 import  Immutable from 'immutable'
-
+import Sample from './sample'
 export default class SubItem extends Component {
     constructor(props){
         super(props) 
@@ -32,7 +32,11 @@ export default class SubItem extends Component {
                 <Badge
                     badgeContent={''}
                     style={ style.badgeContent}
-                    badgeStyle={{...style.badge, 'backgroundColor':'rgba(243, 255, 66, 0.56)'}} 
+                    badgeStyle={
+                        {
+                            ...style.badge, 
+                            'background':' linear-gradient(to right, rgb(243, 8, 8), rgb(93, 214, 38) )',
+                    }} 
                 />
             ) 
         } else {
@@ -42,7 +46,7 @@ export default class SubItem extends Component {
                     <Badge
                         badgeContent={''}
                         style={ style.badgeContent}
-                        badgeStyle={{...style.badge, 'backgroundColor':'rgba(141, 197, 114, 0.56)'}} 
+                        badgeStyle={{...style.badge, 'backgroundColor':'rgb(93, 214, 35)'}} 
                     />
                 ) 
             
@@ -52,39 +56,53 @@ export default class SubItem extends Component {
                     <Badge
                         badgeContent={''}
                         style={ style.badgeContent}
-                        badgeStyle={{...style.badge, 'backgroundColor':'rgba(3, 169, 244, 0.56)'}} 
+                        badgeStyle={{...style.badge, 'backgroundColor':'rgb(13, 163, 230)'}} 
                     />
                 ) 
             } 
-        
-        
         }
+        return leftIcon
     }
 
     renderSample(item) {
-        return [].push(
-            <span>
-               sample 
-            </span>
+        const sample = (
+            <Sample
+                sample={ item.sampling }
+            />
+        )
+        return (
+           <ListItem 
+               primaryText={ "样本"} 
+               children={sample}
+           />
         ) 
     }
     render() {
         const style = this.getStyle() 
         const item = this.props.item
         let leftIcon  = this.renderLeftIcon( item ,style ) 
-        let sample = this.renderSample( item ) 
+        //let sample = this.renderSample( item ) 
+        const itemText = `${this.props.index+1}. ${ item.filter }` //表名
+        const sample = (
+            <Sample
+                sample={ item.sampling }
+            />
+        )
         
        return (
            <ListItem 
-               primaryText={ item.filter } 
+               primaryText={ itemText } 
                style={ style.listItem } 
                leftIcon ={ leftIcon }
-               nesteditems={ sample }
                nestedLevel= {2}
+               key={this.props.key}
            />
        )
     }
 }
+               //children={sample}
+               //nesteditems={ sample }
+               //primaryTogglesNestedList={true}
 
 SubItem.propTypes = {
     item: PropTypes.object.isRequired,
@@ -119,7 +137,6 @@ SubItem.style = {
         cursor: 'pointer',
     },
     badge: {
-        marginTop: '22px',
         width: '20px',
         height: '20px',
     },

@@ -53,7 +53,7 @@ export default class Item extends Component {
         const style = this.getStyle() 
         const item = this.props.item.toArray()
         //const item = this.props.item.toObject()
-        const itemText = this.props.tableName  //表名
+        const itemText = `${this.props.index+1}. ${this.props.tableName}` //表名
 
         const subItemViews  = this.renderSubItems(item, style )  
 
