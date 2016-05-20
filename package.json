@@ -4,7 +4,8 @@
   "description": "db check ui project",
   "main": "index.js",
   "scripts": {
-      "start": "webpack-dev-server --history-api-fallback --no-info --open ",
+      "start": "webpack-dev-server --history-api-fallback --no-info --open --port 3021",
+      "help": "webpack-dev-server --help ",
       "startWebpackdevserverBug": "NODE_ENV=development node src/server/index.js --progress --colors --profile",
       "start-prod": "NODE_ENV=production node src/server/index.js --progress --colors --profile",
       "build": "npm run clean && NODE_ENV=production webpack -p --progress --colors --profile",

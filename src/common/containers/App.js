@@ -15,14 +15,11 @@ import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters, exportTo
 
 import * as todoActions  from '../actions/todo/actions'
 import TodoList from '../components/todo/TodoList'
-//import Footer from '../components/todo/Footer'
+
 import visibleTodos from '../components/todo/visibleTodos'
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-//import LightRawTheme from 'material-ui/styles/raw-themes/light-raw-theme';
 import LightBaseTheme from  'material-ui/styles/baseThemes/lightBaseTheme'
-//import DarkRawTheme from 'material-ui/styles/raw-themes/dark-raw-theme';
-//import ThemeDecorator from 'material-ui/styles/theme-decorator';
 
 
 class App extends Component {
