@@ -7,7 +7,7 @@ import FlatButton from 'material-ui/FlatButton/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import Badge from 'material-ui/Badge/Badge';
 
-import Item from './Item'
+import Item from './item'
 
 var {exportFile, readFile } = require('../../util')
 
@@ -26,24 +26,61 @@ export default class VList  extends Component {
         return style 
     } 
 
+    renderBanner (db, style ){
+        const viewItemNum = db.size  
+        return (
+            <div  className="list-banner" >
+                <div style={ style.totalInfo } >
+                    <span>
+                        { `${ viewItemNum }/${this.props.info.number}`}
+                    </span>
+                </div>
+
+                <div  className="mertic-tips">
+                    <span>
+                        sql错误=
+                        <Badge
+                            badgeContent={''}
+                            style={ style.badgeContent}
+                            badgeStyle={{...style.badge, 'backgroundColor':'rgba(243, 8, 8, 1)'}} 
+                        />
+                        过滤异常=
+                        <Badge
+                            badgeContent={''}
+                            style={ style.badgeContent}
+                            badgeStyle={{...style.badge, 'backgroundColor':'rgba(13, 163, 230, 1 )'}} 
+                        />
+
+                        过滤成功=
+                        <Badge
+                            badgeContent={''}
+                            badgeStyle={{...style.badge, 'backgroundColor':'rgba(93, 214, 35, 1)'}} 
+                            style={ style.badgeContent}
+                        />
+                    </span>
+                    <br/>
+                </div>
+            </div>
+        )
+    }
+
 
     render() {
         const { actions, items } = this.props
         const style = this.getStyle() 
-        const db = items.toObject()
+        //const db = items.toObject()
         return (           
                 <div  className="dbList">
+                    { this.renderBanner (items, style  ) }
                     <List  style={style.list}>
                         { 
-                            Object.keys(db).map( (key,index)  => {
-                                const item = db[key]
+                            items.map((item ,index)  => {
                                 return (
                                     <Item 
                                         index={ index }
                                         actions={actions}
-                                        key={ key }
+                                        key={ index }
                                         item={ item }
-                                        tableName={key} 
                                     />
                                     )
                             })
@@ -57,7 +94,8 @@ export default class VList  extends Component {
 
 VList.propTypes = {
   actions: PropTypes.object.isRequired,
-  items: React.PropTypes.instanceOf(Immutable.Map),
+  items: React.PropTypes.instanceOf(Immutable.List),
+  info: PropTypes.object.isRequired,
 }
 
 VList.style = {
@@ -88,4 +126,11 @@ VList.style = {
     selectBut: {
         marginBottom: '10px',
     },
+    totalInfo: {
+        float: 'left',
+        fontSize: 13,
+        margin: '10px',
+        marginLeft: '30px',
+        fontWeight: 500,
+    }
 }

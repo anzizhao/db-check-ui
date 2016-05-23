@@ -13,6 +13,7 @@ import { Map, List } from 'immutable'
 
 import * as actions from '../actions/dbcheck'
 import VList from '../components/dbcheck/vList'
+import Filter from '../components/dbcheck/filter'
 
 import visibleList from '../components/dbcheck/visibleList'
 
@@ -60,15 +61,22 @@ class App extends Component {
                 background: 'transparent',  
             },
             container: {
+                maxWidth: '43rem',
             }
         }
 
         const { items, actions } = this.props
         return (
             <div className="container content" style={style.container}>
+                <Filter
+                    actions={actions}
+                    filter ={this.props.filter}
+                />
+
                 <VList
                     actions={actions}
                     items={items}
+                    info={ this.props.info }
                 />
             </div>
         )
@@ -77,13 +85,23 @@ class App extends Component {
 
 App.propTypes = {
     actions: PropTypes.object.isRequired,
-    items: React.PropTypes.instanceOf(Map),
+    info: PropTypes.object.isRequired,
+    items: React.PropTypes.instanceOf(List ),
+    filter: React.PropTypes.instanceOf(Map),
 }
 
 
 function select(state) {
+    let info = {
+        number: 0
+    }
+    if( state.dbcheck.db.reports ) {
+        info.number = state.dbcheck.db.reports.size
+    }
     return {
-        items: visibleList( state.dbcheck.db )
+        items: visibleList( state.dbcheck.db.reports, state.dbcheck.filter) ,
+        filter:  state.dbcheck.filter ,
+        info 
     }
 }
 

@@ -127,11 +127,21 @@ function objEqual(f,s) {
     return true
 }
 
+function stateEqual(f,s) {
+    for(let key in f ) {
+        if( f[key] === s[key] )  {
+            return false 
+        }
+    }
+    return true
+}
+
 
 module.exports = {
     loadState,  
     parseInput ,
     exportFile, readFile,  
     storeTodoFromfiles, storeTodoState, storeTodoTags, storeTodoSelectFiles, storeTodoSelectTags, storeJsMind,
-    objEqual
+    objEqual,
+    stateEqual
 }

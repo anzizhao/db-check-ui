@@ -5,6 +5,7 @@ import Badge from 'material-ui/Badge/Badge';
 
 import  Immutable from 'immutable'
 import Sample from './sample'
+
 export default class SubItem extends Component {
     constructor(props){
         super(props) 
@@ -32,11 +33,7 @@ export default class SubItem extends Component {
                 <Badge
                     badgeContent={''}
                     style={ style.badgeContent}
-                    badgeStyle={
-                        {
-                            ...style.badge, 
-                            'background':' linear-gradient(to right, rgb(243, 8, 8), rgb(93, 214, 38) )',
-                    }} 
+                    badgeStyle={ { ...style.badge, 'backgroundColor':'rgb(243, 8, 8)' }}
                 />
             ) 
         } else {
@@ -65,17 +62,17 @@ export default class SubItem extends Component {
     }
 
     renderSample(item) {
-        const sample = (
-            <Sample
-                sample={ item.sampling }
-            />
-        )
-        return (
-           <ListItem 
-               primaryText={ "样本"} 
-               children={sample}
-           />
-        ) 
+        let retArr = []
+        if( item.sampling.length ) {
+            retArr.push  ( 
+                          <Sample
+                              sample={ item.sampling }
+                              key={this.props.key}
+                          />
+                         )
+        }
+
+        return retArr 
     }
     render() {
         const style = this.getStyle() 
@@ -83,11 +80,7 @@ export default class SubItem extends Component {
         let leftIcon  = this.renderLeftIcon( item ,style ) 
         //let sample = this.renderSample( item ) 
         const itemText = `${this.props.index+1}. ${ item.filter }` //表名
-        const sample = (
-            <Sample
-                sample={ item.sampling }
-            />
-        )
+        const sampleView = this.renderSample(item) 
         
        return (
            <ListItem 
@@ -95,11 +88,13 @@ export default class SubItem extends Component {
                style={ style.listItem } 
                leftIcon ={ leftIcon }
                nestedLevel= {2}
-               key={this.props.key}
+               primaryTogglesNestedList={true}
+               nestedItems={ sampleView }
            />
        )
     }
 }
+               //children={sample}
                //children={sample}
                //nesteditems={ sample }
                //primaryTogglesNestedList={true}
@@ -123,18 +118,6 @@ SubItem.style = {
         fontStyle: 'italic',
         margin: '18px',
         color: 'rgba(93, 89, 89, 0.74)'
-    },
-    iconReply: {
-        color: 'rgba(102, 214, 91, 0.89)',
-    },
-    iconATag: {
-        color: 'rgba(102, 214, 91, 0.89)',
-    },
-    iconTag: {
-        color: 'rgba(236, 192, 90, 0.84)',
-    },
-    editLabel: {
-        cursor: 'pointer',
     },
     badge: {
         width: '20px',
