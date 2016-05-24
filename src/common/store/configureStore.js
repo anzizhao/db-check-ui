@@ -21,56 +21,45 @@ import DockMonitor from 'redux-devtools-dock-monitor'
 
 
 const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-  </DockMonitor>
+    <DockMonitor 
+        toggleVisibilityKey="ctrl-h" 
+        changePositionKey="ctrl-q"
+    >
+        <LogMonitor  />
+    </DockMonitor>
 )
 
 
 const stateTransformer = (state) => {
-    let logger  
-    let db = state
-    let newItem = {}
-
-    for(let key in db) {
-        if( ! db.hasOwnProperty(key) ) {
-            continue 
-        }
-        const item = db[key]
-        if (Iterable.isIterable(item)){
-            newItem[key] = item.toJS()
+    const newState = {};
+    for (let i of Object.keys(state)) {
+        if ( Iterable.isIterable(state[i])) {
+            newState[i] = state[i].toJS();
         } else {
-            newItem[key] = db[key] 
-        } 
-    }
-    logger = newItem 
-    //todo 层
-    db = state.todo 
-    newItem = {}
-    for(let key in db ) {
-        if( ! db.hasOwnProperty(key) ) {
-            continue 
+            newState[i] = state[i];
         }
-        const item = db[key]
-        if (Iterable.isIterable(item)){
-            newItem[key] = item.toJS()
-        } else {
-            newItem[key] = db[key] 
-        } 
     }
-    logger.todo = newItem  
-
-    //todos 
-    //db = logger.todo.todos 
-    //newItem = {}
-    //比较深的  特殊对待, 不是递归处理
-    //newItem = db.map(todo =>{
-        //return todo.toJS() 
-    //})
-    //logger.todo.todos = newItem 
-    
-    //todo process 
-    return logger  
+    // 具体区域, 自己保证各种情况不报错
+    //such as below , 
+    // 这里的toJS 修改原来的字段问题 
+    try{
+        let dbCheck  
+        let tmp = newState.dbcheck.db 
+        if( tmp.reports ) {
+            dbCheck = {
+                db: {
+                    reports: tmp.reports.toJS()  
+                } 
+            }
+            newState.dbCheck = dbCheck 
+        }
+    } catch (e) {
+        console.error( e ) 
+        return newState;
+    } 
+    //finally {
+    //}
+    return newState;
 };
 
 
@@ -79,7 +68,7 @@ const stateTransformer = (state) => {
 const middlewareBuilder = () => {
 
   let middleware = {};
-  let universalMiddleware = [thunk,promiseMiddleware];
+  let universalMiddleware = [thunk, promiseMiddleware];
   let allComposeElements = [];
   
   if(process.browser){
@@ -88,7 +77,6 @@ const middlewareBuilder = () => {
         middleware = applyMiddleware(...universalMiddleware);
         allComposeElements = [
             middleware,
-            DevTools.instrument()
         ]
     }else{
         console.log('configureStore, in the browser else ')

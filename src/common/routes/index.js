@@ -5,9 +5,6 @@ import App from "../containers/App";
 
 import error404 from "../components/404";
 
-      //<IndexRoute  
-          //component={Todo} 
-      ///>
 export default (
     <Route name="app" 
         path="/" 

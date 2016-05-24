@@ -4,10 +4,9 @@ import Immutable, {fromJS, Map, List} from 'immutable'
 
 import * as actions from '../../actions/dbcheck'
 import * as apiActions from '../../actions/dbcheck/apiActions'
-import visibleTodos from '../../components/todo/visibleTodos'
 
 const initState  ={
-    db: [], 
+    db: {}, 
     filter: fromJS({
         text: {
             use: false, 
