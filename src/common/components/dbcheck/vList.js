@@ -79,7 +79,7 @@ export default class VList  extends Component {
                                     <Item 
                                         index={ index }
                                         actions={actions}
-                                        key={ index }
+                                        key={ item.get('uuid') }
                                         item={ item }
                                     />
                                     )

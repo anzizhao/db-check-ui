@@ -6,6 +6,8 @@ import * as actions from '../../actions/dbcheck'
 import * as apiActions from '../../actions/dbcheck/apiActions'
 import visibleTodos from '../../components/todo/visibleTodos'
 
+var uuid = require('uuid');
+
 const initState  ={
     db: [], 
     filter: fromJS({
@@ -54,6 +56,7 @@ function _dealInitData( data) {
     let arr = []
     for(let tableName in data.reports ) {
         let arrItem = {
+            uuid: uuid.v1(),
             tableName,
             filters :  data.reports[tableName ]  
         }
@@ -62,7 +65,10 @@ function _dealInitData( data) {
     // mock 300 Item 
     const len = arr.length
     for ( let i=0; i<300; i++) {
-        let newItem = { ... arr[ i % len ].toObject() } 
+        let newItem = { 
+            ... arr[ i % len ].toObject(),  
+            uuid: uuid.v1(),
+        } 
         arr.push( Map( newItem ) )
     }
 
