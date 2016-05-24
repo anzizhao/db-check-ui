@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Map } from 'immutable'
-import Dialog from 'material-ui/lib/dialog';
+import Dialog from 'material-ui/Dialog';
 
 export default class Error extends Component {
     constructor(props) {

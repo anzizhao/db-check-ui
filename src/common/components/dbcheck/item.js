@@ -6,12 +6,9 @@ import  Immutable from 'immutable'
 
 import ListItem from 'material-ui/List/ListItem';
 import Checkbox from 'material-ui/Checkbox';
-import Badge from 'material-ui/Badge/Badge';
-
-
-
 
 import SubItem from './subItem'
+import { sqlFailBadge, filterFailBadge, filterSuccessBadge } from './statusBadge'
 
 export default class Item extends Component {
     constructor(props){
@@ -71,26 +68,9 @@ export default class Item extends Component {
                             //'background':' linear-gradient(to right, rgb(243, 8, 8), rgb(93, 214, 38) )',
     renderLeftIcon(item, style ) {
         let leftIcons = [
-            // sql fail  red 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={ { ...style.badge, 'backgroundColor':'rgb(243, 8, 8)'}}
-                />
-            , 
-            // pass  green 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={{...style.badge, 'backgroundColor':'rgb(93, 214, 35)'}} 
-            />
-            ,
-            // filter fail   blue 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={{...style.badge, 'backgroundColor':'rgb(13, 163, 230)'}} 
-            />
+            sqlFailBadge(),
+            filterSuccessBadge(),
+            filterFailBadge()
         ]
         switch( this.getItemStatus(item) ) {
             case "red":

@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import Immutable, {fromJS, Map, List} from 'immutable'
 
 import * as actions from '../../actions/dbcheck'
+import * as apiActions from '../../actions/dbcheck/apiActions'
 import visibleTodos from '../../components/todo/visibleTodos'
 
 const initState  ={
@@ -41,19 +42,48 @@ function filter ( state = initState.filter , action ) {
     return  state 
 }
 
+function _request(state, action ){
+    switch( action.cmd ) {
+        case 'fetchCheckinData':
+            break
+    }
+    return state 
+}
+
+function _dealInitData( data) {
+    let arr = []
+    for(let tableName in data.reports ) {
+        let arrItem = {
+            tableName,
+            filters :  data.reports[tableName ]  
+        }
+        arr.push( Map( arrItem ) )
+    }
+    data.reports = List( arr )
+    return data 
+}
+
+function _receive(state, action){
+    switch( action.cmd ) {
+        case 'fetchCheckinData':
+            state = _dealInitData( action.data )
+            break
+    }
+    return state 
+}
+
 function db (state = initState.db , action ) {
     switch( action.type ) {
         case actions.INIT_DBCHECK: 
-            let arr = []
-            for(let tableName in action.data.reports ) {
-                let arrItem = {
-                    tableName,
-                    filters :  action.data.reports[tableName ]  
-                }
-                arr.push( Map( arrItem ) )
-            }
-            action.data.reports = List( arr )
-            return action.data 
+            state = _dealInitData( action.data )
+            break
+        case apiActions.FETCH_CMD: 
+           if( action.fetchStatus === 'request') {
+               state = _request(state, action)
+           } else if ( action.fetchStatus === 'receive' ) {
+                state =  _receive(state, action) 
+           }
+
         default:  
     }
     return  state 

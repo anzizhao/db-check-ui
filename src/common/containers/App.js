@@ -20,6 +20,7 @@ import visibleList from '../components/dbcheck/visibleList'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import LightBaseTheme from  'material-ui/styles/baseThemes/lightBaseTheme'
 
+import Error   from '../components/error'
 
 class App extends Component {
     static childContextTypes = {
@@ -35,7 +36,7 @@ class App extends Component {
         };
     }
     componentDidMount() {
-        this.props.actions.initDbcheck()
+        //this.props.actions.initDbcheck()
     }
 
     render() {
@@ -78,6 +79,10 @@ class App extends Component {
                     items={items}
                     info={ this.props.info }
                 />
+
+                <Error 
+                    error={this.props.error} 
+                />
             </div>
         )
     }
@@ -88,6 +93,7 @@ App.propTypes = {
     info: PropTypes.object.isRequired,
     items: React.PropTypes.instanceOf(List ),
     filter: React.PropTypes.instanceOf(Map),
+    error : React.PropTypes.instanceOf(Map),
 }
 
 
@@ -101,7 +107,8 @@ function select(state) {
     return {
         items: visibleList( state.dbcheck.db.reports, state.dbcheck.filter) ,
         filter:  state.dbcheck.filter ,
-        info 
+        info ,
+        error: state.error,
     }
 }
 

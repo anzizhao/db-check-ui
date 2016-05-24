@@ -6,10 +6,10 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField/TextField';
 import FlatButton from 'material-ui/FlatButton/FlatButton';
 import Divider from 'material-ui/Divider';
-import Badge from 'material-ui/Badge/Badge';
 
 import {sortType, status } from '../../actions/dbcheck'
 import  { stateEqual } from '../../util'
+import { sqlFailBadge, filterFailBadge, filterSuccessBadge } from './statusBadge'
 
 export default class Filter extends Component {
 
@@ -18,7 +18,8 @@ export default class Filter extends Component {
         this.state = {
             sortType:  sortType.table,
             status :  status.all ,
-            searchText:'' 
+            searchText:'' ,
+            url:'' ,
         }
     }
     componentWillReceiveProps(np ) {
@@ -67,6 +68,12 @@ export default class Filter extends Component {
             searchText: value  
         })
     };
+    handleChangeUrl = (event, value ) =>{
+        event.preventDefault()
+        this.setState({
+            url: value  
+        })
+    };
 
     handleExecute = ( event ) =>{
         event.preventDefault()
@@ -77,6 +84,18 @@ export default class Filter extends Component {
             sort: this.state.sortType,
         }
         this.props.actions.toFilter(opt)
+    };
+
+    handleUrlKeyDown = (e, _value ) => {
+        //e.preventDefault()
+        if( e.keyCode !== 13 ) {
+            return  
+        }
+        const value =  e.target.value 
+        if( ! value ||  value === '' ) {
+            return  
+        }
+        this.props.actions.fetchUrl( value )
     };
 
     renderSort (style){
@@ -108,26 +127,9 @@ export default class Filter extends Component {
 
     renderStatus ( style ){
         const icons = [
-            // sql fail  red 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={ { ...style.badge, 'backgroundColor':'rgb(243, 8, 8)'}}
-                />
-            , 
-            // pass  green 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={{...style.badge, 'backgroundColor':'rgb(93, 214, 35)'}} 
-            />
-            ,
-            // filter fail   blue 
-            <Badge
-                badgeContent={''}
-                style={ style.badgeContent}
-                badgeStyle={{...style.badge, 'backgroundColor':'rgb(13, 163, 230)'}} 
-            />
+            sqlFailBadge(),
+            filterSuccessBadge(),
+            filterFailBadge()
         ]
 
         const items = [
@@ -194,15 +196,34 @@ export default class Filter extends Component {
         )
     
     }
+    renderUrl( style ){
+        return (
+            <div>
+                <TextField
+                    hintText="输入url, 按Enter确认"
+                    hintStyle={style.hintStyle}
+                    style={ style.urlTextField }
+                    value={ this.state.url }
+                    onChange= { this.handleChangeUrl }
+                    onKeyDown = { this.handleUrlKeyDown }
+                    ref="url" 
+                />
+            </div>
+        )
+         
+    }
+                    //onKeyDown = { this.handleUrlKeyDown }
     render() {
         const style = this.constructor.style 
         return (
             <div 
                 style={{ marginTop: "50px" }} 
             >
+
+                {this.renderUrl (style)}
+
                 {this.renderStatus(style)}
                 {this.renderText(style)}
-
                 <FlatButton 
                     label="执行" 
                     onClick={ this.handleExecute }
@@ -231,19 +252,16 @@ Filter.style = {
     },
     textField: {
         marginLeft: '20px',
-        width: '500px',
+        width: '400px',
+        background: 'transparent',
+        color: 'white',
+    },
+    urlTextField: {
+        width: '600px',
         background: 'transparent',
         color: 'white',
     },
     selectField: {
         width: '200px',
-    },
-    badge: {
-        width: '20px',
-        height: '20px',
-    },
-    badgeContent:{
-        padding: '24px 24px 12px 0' ,
-        marginRight: '5px',
     },
 }

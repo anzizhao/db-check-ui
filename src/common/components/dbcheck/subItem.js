@@ -5,6 +5,7 @@ import Badge from 'material-ui/Badge/Badge';
 
 import  Immutable from 'immutable'
 import Sample from './sample'
+import { sqlFailBadge, filterFailBadge, filterSuccessBadge } from './statusBadge'
 
 export default class SubItem extends Component {
     constructor(props){
@@ -28,34 +29,13 @@ export default class SubItem extends Component {
     renderLeftIcon(item, style ) {
         let leftIcon 
         if( ! item.queryStatus ) {
-            // sql fail  red 
-            leftIcon = (
-                <Badge
-                    badgeContent={''}
-                    style={ style.badgeContent}
-                    badgeStyle={ { ...style.badge, 'backgroundColor':'rgb(243, 8, 8)' }}
-                />
-            ) 
+            leftIcon = sqlFailBadge()
         } else {
             if( ! item.unusualSample ) {
-                // pass  green 
-                leftIcon = (
-                    <Badge
-                        badgeContent={''}
-                        style={ style.badgeContent}
-                        badgeStyle={{...style.badge, 'backgroundColor':'rgb(93, 214, 35)'}} 
-                    />
-                ) 
+                leftIcon = filterSuccessBadge()
             
             } else {
-                // filter fail   blue 
-                leftIcon = (
-                    <Badge
-                        badgeContent={''}
-                        style={ style.badgeContent}
-                        badgeStyle={{...style.badge, 'backgroundColor':'rgb(13, 163, 230)'}} 
-                    />
-                ) 
+                leftIcon = filterFailBadge()
             } 
         }
         return leftIcon

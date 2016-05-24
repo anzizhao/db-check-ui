@@ -3,11 +3,14 @@ import { routerStateReducer } from 'redux-router';
 
 import todo from './todo';
 import dbcheck from './dbcheck';
+import error from './error';
 
 const rootReducer = combineReducers({
-  //router : routerStateReducer,
-  todo,
-  dbcheck
+  //todo,
+  dbcheck,
+  error,
+
 });
+
 
 export default rootReducer;
