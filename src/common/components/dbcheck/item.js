@@ -8,15 +8,22 @@ import ListItem from 'material-ui/List/ListItem';
 import Checkbox from 'material-ui/Checkbox';
 
 import SubItem from './subItem'
+import {stateEqual} from '../../util'
+
 import { sqlFailBadge, filterFailBadge, filterSuccessBadge } from './statusBadge'
 
 export default class Item extends Component {
     constructor(props){
         super(props) 
+        this.state = {
+            renderNest: false, 
+        }
     }
 
     shouldComponentUpdate (nProps, nState) {
-        if( this.props.item !== nProps.item ) {
+        if( this.props.item !== nProps.item 
+            || stateEqual(nState, this.state ) 
+          ) {
             return true 
         }
         return false  
@@ -65,6 +72,19 @@ export default class Item extends Component {
         return "green" 
 
     }
+    handleToggleNested = ( listItem ) => {
+        if( listItem.state.open ) {
+            // to close 
+            this.setState({
+                renderNest: false  
+            })
+        } else {
+            // to open 
+            this.setState({
+                renderNest: true  
+            })
+        }
+    };
                             //'background':' linear-gradient(to right, rgb(243, 8, 8), rgb(93, 214, 38) )',
     renderLeftIcon(item, style ) {
         let leftIcons = [
@@ -91,7 +111,7 @@ export default class Item extends Component {
         //const item = this.props.item.toObject()
         const itemText = `${this.props.index+1}. ${this.props.item.get('tableName') }` //表名
 
-        const subItemViews  = this.renderSubItems(item, style )  
+        const subItemViews  = this.state.renderNest ? this.renderSubItems(item, style ) : [<span key={1}></span>] 
         const leftIcon  = this.renderLeftIcon( item ,style ) 
 
         //TODO maybe 如果所有过滤都跑过为绿色(querystatus true && unusualSample false)  不然为 
@@ -106,6 +126,7 @@ export default class Item extends Component {
                         nestedItems={ subItemViews }
                         leftIcon ={ leftIcon }
                         key={this.props.index}
+                        onNestedListToggle={this.handleToggleNested}
                     />
                 </div>
             </div>

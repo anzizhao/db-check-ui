@@ -55,6 +55,7 @@
     "path": "^0.12.7",
     "prism": "^1.0.0",
     "react": "^15.1.0",
+    "react-addons-perf": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-dom": "^15.0.2",
     "react-prism": "^3.2.0",

@@ -72,6 +72,7 @@ class App extends Component {
                 <Filter
                     actions={actions}
                     filter ={this.props.filter}
+                    dispatch = { this.props.dispatch }
                 />
 
                 <VList
@@ -90,6 +91,7 @@ class App extends Component {
 
 App.propTypes = {
     actions: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
     info: PropTypes.object.isRequired,
     items: React.PropTypes.instanceOf(List ),
     filter: React.PropTypes.instanceOf(Map),
@@ -114,7 +116,8 @@ function select(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions , dispatch)
+        actions: bindActionCreators(actions , dispatch),
+        dispatch,
     }
 }
 

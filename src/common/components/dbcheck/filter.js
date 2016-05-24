@@ -7,7 +7,9 @@ import TextField from 'material-ui/TextField/TextField';
 import FlatButton from 'material-ui/FlatButton/FlatButton';
 import Divider from 'material-ui/Divider';
 
-import {sortType, status } from '../../actions/dbcheck'
+import { sortType, status } from '../../actions/dbcheck'
+import { startPerformance, endPerformance } from '../../actions/performance'
+
 import  { stateEqual } from '../../util'
 import { sqlFailBadge, filterFailBadge, filterSuccessBadge } from './statusBadge'
 
@@ -96,6 +98,15 @@ export default class Filter extends Component {
             return  
         }
         this.props.actions.fetchUrl( value )
+    };
+
+    handleStartPerformance = (e ) => {
+        event.preventDefault()
+        this.props.dispatch( startPerformance() )
+    };
+    handleEndPerformance = (e ) => {
+        event.preventDefault()
+        this.props.dispatch( endPerformance() )
     };
 
     renderSort (style){
@@ -229,6 +240,17 @@ export default class Filter extends Component {
                     onClick={ this.handleExecute }
                     primary
                 />
+                <Divider />
+                <FlatButton 
+                    label="开始性能测试" 
+                    onClick={ this.handleStartPerformance }
+                    primary
+                />
+                <FlatButton 
+                    label="结束性能测试" 
+                    onClick={ this.handleEndPerformance }
+                    primary
+                />
             </div>
         )
     }
@@ -237,6 +259,7 @@ export default class Filter extends Component {
 
 Filter.propTypes = {
   actions: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
   filter: React.PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 

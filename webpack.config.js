@@ -111,7 +111,7 @@ if (process.env.NODE_ENV === 'production') {
         },
         entry :{
             app:  [
-                'webpack-dev-server/client?http://localhost:3000',
+                'webpack-dev-server/client?http://localhost:3021',
                 'webpack/hot/only-dev-server',
                 './src/client/index.js',
             ],
