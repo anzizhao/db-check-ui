@@ -63,14 +63,15 @@ function _dealInitData( data) {
         arr.push( Map( arrItem ) )
     }
     // mock 300 Item 
-    const len = arr.length
-    for ( let i=0; i<300; i++) {
-        let newItem = { 
-            ... arr[ i % len ].toObject(),  
-            uuid: uuid.v1(),
-        } 
-        arr.push( Map( newItem ) )
-    }
+    
+    //const len = arr.length
+    //for ( let i=0; i<300; i++) {
+        //let newItem = { 
+            //... arr[ i % len ].toObject(),  
+            //uuid: uuid.v1(),
+        //} 
+        //arr.push( Map( newItem ) )
+    //}
 
     data.reports = List( arr )
     return data 
