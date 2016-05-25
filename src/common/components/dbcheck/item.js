@@ -22,7 +22,7 @@ export default class Item extends Component {
 
     shouldComponentUpdate (nProps, nState) {
         if( this.props.item !== nProps.item 
-            || stateEqual(nState, this.state ) 
+            || ! stateEqual(nState, this.state ) 
           ) {
             return true 
         }
