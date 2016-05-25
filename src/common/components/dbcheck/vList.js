@@ -40,14 +40,22 @@ export default class VList  extends Component {
         if( np.items !== this.props.items || 
             ! stateEqual( ns, this.state ) 
           )  {
-              console.log('should component update true ')
+              //console.log('should component update true ')
               return true  
         }
-        console.log('should component update false')
+        //console.log('should component update false')
         return false 
     }
     componentDidUpdate(pp){
-        console.log('component did update')
+        //console.log('component did update')
+        this.countShowItems(this.props)
+    }
+
+    componentWillMount(){
+        //根据屏幕大小 算出应该显示多少个
+        // per item height 46px 
+        this.shouldShowItemNum = Math.floor(  window.screen.height / 48 + 5 )
+        this.state.showItemNum = this.shouldShowItemNum 
         this.countShowItems(this.props)
     }
 
