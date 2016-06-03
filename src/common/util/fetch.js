@@ -67,7 +67,6 @@ export default function createFetch ( FETCH_CMD ) {
             .catch((error) => {  // http 协议层的错误
                 const msg = 'fetch error' 
                 dispatch ( showErrMsg( msg, 0, null, { notSetTimeout: true }  ) )
-                dispatch( retObj.receiveRequest(cmd, fail ))
             })
         }
     }

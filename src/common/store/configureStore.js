@@ -21,13 +21,16 @@ import DockMonitor from 'redux-devtools-dock-monitor'
 
 
 const DevTools = createDevTools(
-    <DockMonitor 
-        toggleVisibilityKey="ctrl-h" 
-        changePositionKey="ctrl-q"
-    >
-        <LogMonitor  />
-    </DockMonitor>
+        <LogMonitor  
+            theme='tomorrow'
+        />
 )
+    //<DockMonitor 
+        //toggleVisibilityKey="ctrl-h" 
+        //changePositionKey="ctrl-q"
+        //defaultIsVisible={true}
+    //>
+    //</DockMonitor>
 
 
 const stateTransformer = (state) => {
@@ -86,7 +89,8 @@ const middlewareBuilder = () => {
         middleware = applyMiddleware(...universalMiddleware, logger  );
         allComposeElements = [
             middleware,
-            DevTools.instrument()
+            //window.devToolsExtension ? window.devToolsExtension() : f => f
+            //DevTools.instrument()
         ]
     }
   }else{
@@ -101,10 +105,12 @@ const middlewareBuilder = () => {
 
 }
 
-const finalCreateStore = compose(...middlewareBuilder())(createStore);
+//const finalCreateStore = compose(...middlewareBuilder())(createStore);
+const enhancer = compose( ...middlewareBuilder() ) ;
 
 export default function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState);
+    const store = createStore(rootReducer, initialState, enhancer);
+  //const store = finalCreateStore(rootReducer, initialState);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
