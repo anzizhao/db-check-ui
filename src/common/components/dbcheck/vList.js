@@ -9,15 +9,76 @@ import Badge from 'material-ui/Badge/Badge';
 
 import Item from './item'
 
-var {exportFile, readFile } = require('../../util')
+var {exportFile, readFile, stateEqual } = require('../../util')
 
 export default class VList  extends Component {
     constructor(props) {
         super(props);
+        this.shouldShowItemNum = 20
+        this.timeout = null
+        this.state = {
+            showItemNum : this.shouldShowItemNum  
+        }
     }
 
-    componentDidMount(){
+    componentWillMount(){
+        //根据屏幕大小 算出应该显示多少个
+        // per item height 46px 
+        this.shouldShowItemNum = Math.floor(  window.screen.height / 48 + 5 )
+        this.state.showItemNum = this.shouldShowItemNum 
+        this.countShowItems(this.props)
     }
+
+    componentWillReceiveProps( np ){
+        if( np.items !== this.props.items  )  {
+            NProgress.start();
+            this.state.showItemNum = this.shouldShowItemNum 
+            //this.countShowItems(np)
+        }
+    }
+    shouldComponentUpdate(np, ns) {
+        if( np.items !== this.props.items || 
+            ! stateEqual( ns, this.state ) 
+          )  {
+              //console.log('should component update true ')
+              return true  
+        }
+        //console.log('should component update false')
+        return false 
+    }
+    componentDidUpdate(pp){
+        //console.log('component did update')
+        this.countShowItems(this.props)
+    }
+
+    componentWillMount(){
+        //根据屏幕大小 算出应该显示多少个
+        // per item height 46px 
+        this.shouldShowItemNum = Math.floor(  window.screen.height / 48 + 5 )
+        this.state.showItemNum = this.shouldShowItemNum 
+        this.countShowItems(this.props)
+    }
+
+    //计算显示数目
+    countShowItems( props ){
+        let showItemNum = this.state.showItemNum  
+        if( props.items.size <=  showItemNum )  {
+            //处理完成
+            NProgress.done();
+            return  
+        }
+        let shouldShowItemNum = 2 * this.shouldShowItemNum 
+        showItemNum += ( props.items.size - showItemNum  > shouldShowItemNum ) ? 
+            shouldShowItemNum : props.items.size 
+            
+        //防止合并 渲染
+        setTimeout( ()=> {
+            this.setState({
+                showItemNum: showItemNum 
+            })
+        }, 10)
+    }
+
 
     getStyle (){
         const style =  this.constructor.style
@@ -74,12 +135,13 @@ export default class VList  extends Component {
                     { this.renderBanner (items, style  ) }
                     <List  style={style.list}>
                         { 
-                            items.map((item ,index)  => {
+                            items.filter((item, index)=> index < this.state.showItemNum )
+                            .map((item ,index)  => {
                                 return (
                                     <Item 
                                         index={ index }
                                         actions={actions}
-                                        key={ index }
+                                        key={ item.get('uuid') }
                                         item={ item }
                                     />
                                     )

@@ -120,7 +120,7 @@ function objEqual(f,s) {
         return false 
     }
     for(let key in f ) {
-        if( f[key] === s[key] )  {
+        if( f[key] !== s[key] )  {
             return false 
         }
     }
@@ -129,7 +129,7 @@ function objEqual(f,s) {
 
 function stateEqual(f,s) {
     for(let key in f ) {
-        if( f[key] === s[key] )  {
+        if( f[key] !== s[key] )  {
             return false 
         }
     }

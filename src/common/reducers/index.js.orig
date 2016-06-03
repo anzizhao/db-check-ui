@@ -1,0 +1,21 @@
+import { combineReducers } from 'redux';
+import { routerStateReducer } from 'redux-router';
+
+import dbcheck from './dbcheck';
+import error from './error';
+<<<<<<< HEAD
+=======
+import performance from './performance';
+
+>>>>>>> dbcheck
+const rootReducer = combineReducers({
+  dbcheck,
+  error,
+<<<<<<< HEAD
+=======
+  performance
+>>>>>>> dbcheck
+});
+
+
+export default rootReducer;
